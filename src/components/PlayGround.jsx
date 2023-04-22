@@ -5,38 +5,39 @@ import Box from "./Box";
 
 import { socket } from "../App.jsx";
 
-export default function PlayGround({ currentUser,setSuperColor }) {
+export default function PlayGround({ currentUser, setSuperColor }) {
     const [nextPlayer, setNextPlayer] = useState(null);
     const [statusText, setStatusText] = useState("");
     const [status, setStatus] = useState(Array(9).fill(null));
 
-    socket.on("playerJoin", (player) => {
-        console.log("player recevied", player);
-        setNextPlayer(player);
-        setStatusText(currentUser.name + " it's your turn");
-    });
-
     useEffect(() => {
+        socket.on("playerJoin", (player) => {
+            console.log("player recevied", player);
+            setNextPlayer(player);
+        });
         socket.on("stateChange", (state) => {
             console.log("state changed", state);
             setStatus(state);
         });
 
-        socket.on("winner",(params)=>{
-            if((params.flag && currentUser.code) || (!params.flag && !currentUser.code)){
-                setStatusText(params.winMessage)
-                setSuperColor("bg-green-400")
-            }else{
-                setStatusText(params.runMessage)
-                setSuperColor(params.runColor)
+        socket.on("winner", (params) => {
+            console.log(params)
+            if (params.winner === currentUser.name) {
+                setStatusText(params.winMessage);
+                setSuperColor("bg-green-400");
+            } else {
+                setStatusText(params.runMessage);
+                setSuperColor("bg-rose-400");
             }
-        })
+        });
 
-        socket.on("drawMatch",(params)=>{
-            setStatusText(params.message)
-        })
+        socket.on("matchDraw", (params) => {
+            console.log("draw",params)
+            setStatusText(params.message);
+            setSuperColor("bg-sky-400");
+        });
 
-        socket.on("message",(text)=>setStatusText(text))
+        socket.on("message", (text) => setStatusText(text));
 
         console.log(currentUser.player);
         setNextPlayer(currentUser.player);
@@ -47,12 +48,12 @@ export default function PlayGround({ currentUser,setSuperColor }) {
     }, []);
 
     function getTheAction(data) {
-        socket.emit("play", { ...currentUser, data });
+        socket.emit("play", data);
     }
 
     return (
         <>
-            <div className="text-xl w-50">
+            <div className="text-xl w-50 mystyle">
                 <div></div>
                 <span className="flex justify-between gap-3">
                     <h2>{currentUser.name}</h2>
@@ -70,7 +71,7 @@ export default function PlayGround({ currentUser,setSuperColor }) {
                 </span>
             </div>
 
-            <div className="w-52 h-52 grid grid-cols-3 grid-rows-3 gap-1">
+            <div className="w-52 h-52 grid grid-cols-3 grid-rows-3 gap-1 mystyle">
                 <Box index={status[0]} value={0} action={getTheAction} />
                 <Box index={status[1]} value={1} action={getTheAction} />
                 <Box index={status[2]} value={2} action={getTheAction} />
@@ -83,7 +84,7 @@ export default function PlayGround({ currentUser,setSuperColor }) {
                 <Box index={status[7]} value={7} action={getTheAction} />
                 <Box index={status[8]} value={8} action={getTheAction} />
             </div>
-            <h2 className="text-center mt-5 text-xl">{statusText}</h2>
+            <h2 className="text-center mt-5 text-xl mystyle">{statusText}</h2>
         </>
     );
 }

@@ -38,14 +38,13 @@ function Home({ setCurrentUser }) {
         console.log("socket")
     }
     return (
-        <div className="container p-1 w-96 flex flex-col gap-2">
+        <div className="container mystyle p-1 sm:w-96 flex flex-col gap-2">
             <input
                 type="text"
                 className="text-xl rounded-md p-1 outline-none w-full"
                 placeholder="Your Name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                disabled={isJoin}
             />
             {isJoin && (
                 <input
@@ -57,18 +56,18 @@ function Home({ setCurrentUser }) {
                 />
             )}
 
-            <div className="flex gap-1 justify-center">
+            <div className="flex gap-3 justify-center">
                 <button
-                    className="bg-green-600 text-white p-1 text-lg rounded-md w-32"
+                    className="bg-green-600 text-white p-1 text-lg rounded-md w-20"
                     onClick={gameJoinFunction}
                 >
-                    Join Game
+                    Join
                 </button>
                 <button
-                    className="bg-orange-400 text-white p-1 text-lg rounded-md w-32"
+                    className="bg-orange-400 text-white p-1 text-lg rounded-md w-20"
                     onClick={createGame}
                 >
-                    Create Game
+                    Create
                 </button>
             </div>
         </div>

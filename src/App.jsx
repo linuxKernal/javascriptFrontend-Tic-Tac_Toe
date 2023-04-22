@@ -2,15 +2,15 @@ import PlayGround from "./components/PlayGround";
 import { useState } from "react";
 import Home from "./components/Home";
 import { io } from "socket.io-client";
-
-export const socket = io("https://javascriptbackend-tic-tac-toe-production.up.railway.app");
+// https://javascriptbackend-tic-tac-toe-production.up.railway.app
+export const socket = io("http://localhost:3000");
 socket.on("connect", () => {
     console.log("socket.io successfully connected", socket.id);
 });
 function App() {
     const [currentUser, setCurrentUser] = useState(null);
     const [superColor, setSuperColor] = useState("bg-zinc-100");
-    console.log(superColor)
+    console.log(superColor);
     return (
         <div
             className={
@@ -19,8 +19,8 @@ function App() {
                 "  flex justify-center items-center gap-3 flex-col"
             }
         >
-            <h2 className="text-center text-seagreen text-3xl absolute top-3">
-                Socker.io node Js express Game
+            <h2 className="text-center text-seagreen text-3xl absolute top-3 capitalize">
+                tic tac toe
             </h2>
 
             <div className="text-green-700 w-10/12 h-11/12">
@@ -28,7 +28,10 @@ function App() {
                     {!currentUser ? (
                         <Home setCurrentUser={setCurrentUser} />
                     ) : (
-                        <PlayGround currentUser={currentUser} setSuperColor={setSuperColor} />
+                        <PlayGround
+                            currentUser={currentUser}
+                            setSuperColor={setSuperColor}
+                        />
                     )}
                 </div>
             </div>

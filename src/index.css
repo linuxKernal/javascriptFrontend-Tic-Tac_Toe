@@ -1,3 +1,21 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+
+.mystyle{
+    animation-name: superstyle;
+    animation-duration: 1s;
+}
+
+@keyframes superstyle {
+    from {
+        transform: translateY(80px);
+        opacity: 0;
+    }
+    to{
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
