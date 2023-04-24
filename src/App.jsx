@@ -3,7 +3,7 @@ import { useState } from "react";
 import Home from "./components/Home";
 import { io } from "socket.io-client";
  
-export const socket = io("https://javascriptbackend-tic-tac-toe-production.up.railway.app");
+export const socket = io("https://javascript-tik-tac-toa.azurewebsites.net/");
 socket.on("connect", () => {
     console.log("socket.io successfully connected", socket.id);
 });
