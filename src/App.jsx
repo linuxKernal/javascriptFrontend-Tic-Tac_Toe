@@ -4,7 +4,7 @@ import Home from "./components/Home";
 import { io } from "socket.io-client";
 import MyContext from "./context/myContext";
 // https://javascript-tik-tac-toa.azurewebsites.net/
-export const socket = io("http://localhost:3000");
+export const socket = io("https://javascript-tik-tac-toa.azurewebsites.net/");
 socket.on("connect", () => {
     console.log("socket.io successfully connected", socket.id);
 });
