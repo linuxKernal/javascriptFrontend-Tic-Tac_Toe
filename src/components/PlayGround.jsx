@@ -5,7 +5,7 @@ import Box from "./Box";
 
 import { socket } from "../App.jsx";
 
-export default function PlayGround({ currentUser, setSuperColor }) {
+export default function PlayGround({ currentUser, setSuperColor,theme }) {
     const [nextPlayer, setNextPlayer] = useState(null);
     const [statusText, setStatusText] = useState("");
     const [status, setStatus] = useState(Array(9).fill(null));
@@ -27,7 +27,7 @@ export default function PlayGround({ currentUser, setSuperColor }) {
                 setSuperColor("bg-green-400");
             } else {
                 setStatusText(params.runMessage);
-                setSuperColor("bg-rose-400");
+                setSuperColor("bg-red-400");
             }
         });
 
@@ -38,12 +38,16 @@ export default function PlayGround({ currentUser, setSuperColor }) {
         });
 
         socket.on("message", (text) => setStatusText(text));
+        socket.on("gameReset",()=>{
+            setSuperColor("bg-zinc-100")
+            setStatus(Array(9).fill(null))
+        })
 
         console.log(currentUser.player);
         setNextPlayer(currentUser.player);
         if (currentUser.code)
             setStatusText(
-                `game code ${currentUser.code} share to your friends`
+                `Room code ${currentUser.code} share to your friends`
             );
     }, []);
 
@@ -71,20 +75,23 @@ export default function PlayGround({ currentUser, setSuperColor }) {
                 </span>
             </div>
 
-            <div className="w-52 h-52 grid grid-cols-3 grid-rows-3 gap-1 mystyle">
-                <Box index={status[0]} value={0} action={getTheAction} />
-                <Box index={status[1]} value={1} action={getTheAction} />
-                <Box index={status[2]} value={2} action={getTheAction} />
+            <div className={`${theme==="super" && "bg-sky-400"} w-52 h-52 grid grid-cols-3 grid-rows-3 gap-1 mystyle`}>
+                <Box index={status[0]} value={0} action={getTheAction} theme={theme} />
+                <Box index={status[1]} value={1} action={getTheAction} theme={theme} />
+                <Box index={status[2]} value={2} action={getTheAction} theme={theme} />
 
-                <Box index={status[3]} value={3} action={getTheAction} />
-                <Box index={status[4]} value={4} action={getTheAction} />
-                <Box index={status[5]} value={5} action={getTheAction} />
+                <Box index={status[3]} value={3} action={getTheAction} theme={theme} />
+                <Box index={status[4]} value={4} action={getTheAction} theme={theme} />
+                <Box index={status[5]} value={5} action={getTheAction} theme={theme} />
 
-                <Box index={status[6]} value={6} action={getTheAction} />
-                <Box index={status[7]} value={7} action={getTheAction} />
-                <Box index={status[8]} value={8} action={getTheAction} />
+                <Box index={status[6]} value={6} action={getTheAction} theme={theme} />
+                <Box index={status[7]} value={7} action={getTheAction} theme={theme} />
+                <Box index={status[8]} value={8} action={getTheAction} theme={theme} />
             </div>
             <h2 className="text-center mt-5 text-xl mystyle">{statusText}</h2>
+            <button className="bg-red-500 py-0.5 w-20 rounded-md text-white text-xl" onClick={()=>socket.emit("resetTheGame")}>
+                Reset
+            </button>
         </>
     );
 }
