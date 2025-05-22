@@ -4,7 +4,7 @@ import Home from "./components/Home";
 import { io } from "socket.io-client";
 import MyContext from "./context/myContext";
 
-export const socket = io("javascriptbackend-tic-tac-toe-production.up.railway.app:8080");
+export const socket = io("javascriptbackend-tic-tac-toe-production.up.railway.app");
 socket.on("connect", () => {
     console.log("socket.io successfully connected", socket.id);
 });
